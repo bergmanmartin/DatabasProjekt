@@ -10,12 +10,12 @@ public class RegisterFrame extends JFrame implements ActionListener {
     Controller controller = null;
     JLabel userLbl = new JLabel("USERNAME");
 
-    JLabel lblMedNb = new JLabel("Medical number");
+    JLabel lblMedNb = new JLabel("Medical number - 9 digits");
     JTextField tfUser = new JTextField();
     JTextField tfPswrd = new JTextField();
     JButton btnRegister = new JButton("Register");
     JTextField tfMednb = new JTextField();
-    JLabel lblSex = new JLabel("Sex (Enter onlyM or F)");
+    JLabel lblSex = new JLabel("Sex (Enter only M or F)");
     JTextField tfSex = new JTextField();
     JLabel lblAdress = new JLabel("Adress");
     JTextField tfAdress = new JTextField();

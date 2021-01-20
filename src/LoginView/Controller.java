@@ -3,11 +3,9 @@ package LoginView;
 import Model.User;
 
 import javax.swing.*;
+import javax.swing.plaf.nimbus.State;
 import javax.swing.table.DefaultTableModel;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Controller {
@@ -58,7 +56,7 @@ public class Controller {
         registerFrame.setVisible(true);
     }
 
-    public ArrayList<User> storeUser() {
+    public void storeUser() {
 
         ArrayList<User> userList = new ArrayList<User>();
         String usName = registerFrame.getUsername();
@@ -73,44 +71,33 @@ public class Controller {
 
 
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
             String url = "jdbc:sqlserver://localhost";
 
             String us = "marre";
             String pw = "970321";
             Connection con = DriverManager.getConnection(url, us, pw);
-
-            String query1 = "SELECT * FROM Hopsital.dbo.PATIENT_REGISTER";
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query1);
-            User user;
+                
+            st.executeQuery("Insert into [Hospital.dbo.PATIENT_REGISTER] VALUES (" + mednumb + ","  + "'" + fname + "'" + "," + "'" +lname
+            +"'" + "," + "'" + sex + "'" + "," + "'" + phonenumber + "'" + "," + "'" + birthday + "'" + "," + "'" + regdate + "'" + "," +  0 + "'" +
+                    adress + "'" + "," + "'" + usName + "'" + ");");
+            st.close();
+            con.close();
 
-            while(rs.next()) {
-                user = new User(rs.getString("username"),
-                                rs.getInt("medicinal_id"),
-                                rs.getString("f_name"),
-                                rs.getString("l_name"),
-                                rs.getString("sex"),
-                                rs.getString("phoneNumber"),
-                                rs.getString("birthday"),
-                                rs.getString("reg_date"),
-                                rs.getString("adress"));
-
-                userList.add(user);
-            }
 
 
         } catch (Exception e) {
             e.printStackTrace();;
         }
 
-        return userList;
+
 
     }
 
-    public void displayPatients(){
+    /*public void displayPatients(){
         JTable table = adminView.getPatientTable();
-        ArrayList<User> list = storeUser();
+
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         Object[] row = new Object[7];
         for (int i = 0; i < list.size(); i++) {
@@ -127,7 +114,7 @@ public class Controller {
 
         }
 
-    }
+    }*/
 
 
 

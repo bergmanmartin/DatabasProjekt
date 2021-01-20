@@ -119,7 +119,7 @@ public class AdminView extends JFrame implements ActionListener {
             spPatients.setVisible(true);
             lblDoctors.setVisible(false);
             lblPatients.setVisible(true);
-            controller.displayPatients();
+
 
         }
 
