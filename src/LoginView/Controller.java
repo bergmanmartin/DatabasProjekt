@@ -16,6 +16,8 @@ public class Controller {
     DoctorView doctorView;
     RegisterFrame registerFrame;
     DBConnection connection;
+    AddDoctorFrame addDoctorFrame;
+    Model.Doctor doctor;
 
 
 
@@ -56,6 +58,18 @@ public class Controller {
     public void showRegistration() {
         loginFrame.setVisible(false);
         registerFrame.setVisible(true);
+    }
+
+    public void showAddDoctorView(){
+        addDoctorFrame = new AddDoctorFrame(this);
+    }
+
+    public void getInfo(){
+        addDoctorFrame.getTfID();
+        addDoctorFrame.getTfSkill();
+        addDoctorFrame.getTfPrice();
+        addDoctorFrame.getTfPhone();
+        addDoctorFrame.getTfName();
     }
 
     public ArrayList<User> storeUser() {
@@ -128,6 +142,10 @@ public class Controller {
         }
 
     }
+
+
+
+
 
 
 

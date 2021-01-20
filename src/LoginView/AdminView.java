@@ -96,6 +96,7 @@ public class AdminView extends JFrame implements ActionListener {
     }
 
     public void btnActions() {
+        btnAddDoctor.addActionListener(this);
         btnloadPatients.addActionListener(this);
         btnloadDoctors.addActionListener(this);
     }
@@ -124,8 +125,9 @@ public class AdminView extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == btnAddDoctor) {
-            numOfdocs++;
+
         }
+
 
     }
 
