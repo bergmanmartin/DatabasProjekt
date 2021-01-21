@@ -67,7 +67,11 @@ public class Controller {
 
     public void showAddDoctorView(){
         addDoctorFrame = new AddDoctorFrame(this);
+    }
 
+    public void modifyDoctor(String id, String skill, String price, String phone, String name){
+
+        addDoctorFrame = new AddDoctorFrame(this, id, skill, price, phone, name);
     }
 
     public void getInfo(){
@@ -85,6 +89,35 @@ public class Controller {
             Connection con = DriverManager.getConnection(url, us, pw);
             String query = "Insert into Hospital.dbo.DOCTOR_REGISTER values(" + id + ", " + "'" + skill
                     + "'" + ", " + price + ", " + "'" + phone + "'" + "," + "'" + name + "');";
+            Statement st = con.createStatement();
+            st.executeQuery(query);
+
+            con.close();
+            st.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getInfo(int oldId){
+        int id = addDoctorFrame.getTfID();
+        String skill = addDoctorFrame.getTfSkill();
+        int price = addDoctorFrame.getTfPrice();
+        String phone = addDoctorFrame.getTfPhone();
+        String name = addDoctorFrame.getTfName();
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+            String query = "UPDATE Hospital.dbo.DOCTOR_REGISTER SET doctor_id = " + id + ", doctor_skill = " + skill + ", " +
+                    "doctor_price = " + price + "doctor_phone = " + phone + "doctor_name = "+ name +
+                    "WHERE doctor_id = " + oldId + ";";
             Statement st = con.createStatement();
             st.executeQuery(query);
 

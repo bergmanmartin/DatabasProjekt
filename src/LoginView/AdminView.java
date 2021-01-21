@@ -18,7 +18,6 @@ public class AdminView extends JFrame implements ActionListener {
 
     private DBConnection connection;
 
-    private JButton btnAddPatient = new JButton("Add Patient");
     private JButton btnChangePatient = new JButton("Modify Patient");
     private JButton btnAddDoctor = new JButton("Add Doctor");
     private JButton btnModifyDoctor = new JButton("Modify Doctor");
@@ -108,12 +107,11 @@ public class AdminView extends JFrame implements ActionListener {
 
     public void setLayout() {
         btnAddDoctor.setBounds(50, 150, 120, 40);
-        btnAddPatient.setBounds(50, 200, 120, 40);
-        btnChangePatient.setBounds(50, 250, 120, 40);
-        btnModifyDoctor.setBounds(50, 300, 120, 40);
-        btnloadDoctors.setBounds(50, 350, 120, 40);
-        btnloadPatients.setBounds(50, 400, 120, 40);
-        btndelDoctor.setBounds(50, 450, 120, 40);
+        btnChangePatient.setBounds(50, 200, 120, 40);
+        btnModifyDoctor.setBounds(50, 250, 120, 40);
+        btnloadDoctors.setBounds(50, 300, 120, 40);
+        btnloadPatients.setBounds(50, 350, 120, 40);
+        btndelDoctor.setBounds(50, 400, 120, 40);
 
         doctorsTable.setModel(doctorsCol);
 
@@ -129,7 +127,6 @@ public class AdminView extends JFrame implements ActionListener {
 
     public void addComponents() {
         container.add(btnAddDoctor);
-        container.add(btnAddPatient);
         container.add(btnChangePatient);
         container.add(btnModifyDoctor);
         container.add(btnloadDoctors);
@@ -145,6 +142,8 @@ public class AdminView extends JFrame implements ActionListener {
         btnAddDoctor.addActionListener(this);
         btnloadPatients.addActionListener(this);
         btnloadDoctors.addActionListener(this);
+        btnModifyDoctor.addActionListener(this);
+        btnChangePatient.addActionListener(this);
     }
 
 
@@ -175,7 +174,17 @@ public class AdminView extends JFrame implements ActionListener {
         if (e.getSource() == btnAddDoctor) {
             controller.showAddDoctorView();
             controller.getInfo();
+        }
 
+        if (e.getSource() == btnModifyDoctor){
+            if(doctorsTable.getSelectedRow() != -1);
+            String id = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString();
+            String skill = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 1).toString();
+            String price = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 2).toString();
+            String phone = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 3).toString();
+            String name = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 4).toString();
+            controller.modifyDoctor(id,skill,price,phone,name);
+            controller.getInfo(Integer.parseInt(doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString()));
         }
 
 

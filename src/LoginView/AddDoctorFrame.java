@@ -39,6 +39,26 @@ public class AddDoctorFrame extends JFrame implements ActionListener {
 
     }
 
+    public AddDoctorFrame(Controller C, String id, String skill, String price, String phone, String name) {
+        this.C = C;
+
+        setTitle("Add a doctor");
+        setBounds(10, 10, 700, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        setVisible(true);
+
+        setLayoutManager();
+
+        tfID.setText(id);
+        tfSkill.setText(skill);
+        tfPrice.setText(price);
+        tfPhone.setText(phone);
+        tfName.setText(name);
+
+    }
+
     public void setLayoutManager() {
         container.setLayout(null);
         setLayout();
