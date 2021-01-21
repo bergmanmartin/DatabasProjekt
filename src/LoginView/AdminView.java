@@ -68,8 +68,8 @@ public class AdminView extends JFrame implements ActionListener {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost";
 
-            String us = "marre";
-            String pw = "970321";
+            String us = "Erik";
+            String pw = "redred34";
             Connection con = DriverManager.getConnection(url, us, pw);
 
             String query = "SELECT * FROM HOSPITAL.dbo.DOCTOR_REGISTER";
@@ -177,14 +177,16 @@ public class AdminView extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == btnModifyDoctor){
-            if(doctorsTable.getSelectedRow() != -1);
-            String id = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString();
-            String skill = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 1).toString();
-            String price = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 2).toString();
-            String phone = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 3).toString();
-            String name = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 4).toString();
-            controller.modifyDoctor(id,skill,price,phone,name);
-            controller.getInfo(Integer.parseInt(doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString()));
+            if(doctorsTable.getSelectedRow() != -1) {
+                String id = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString();
+                String skill = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 1).toString();
+                String price = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 2).toString();
+                String phone = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 3).toString();
+                String name = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 4).toString();
+                controller.modifyDoctor(id, skill, price, phone, name);
+                controller.getInfo(Integer.parseInt(doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString()));
+                System.out.println((Integer.parseInt(doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString())));
+            }
         }
 
 
@@ -203,6 +205,10 @@ public class AdminView extends JFrame implements ActionListener {
 
     public void createNewDoctor() {
 
+    }
+
+    public JTable getDoctormodel(){
+        return doctorsTable;
     }
 
     public static void main(String[] args) {

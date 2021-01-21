@@ -84,8 +84,8 @@ public class Controller {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost";
 
-            String us = "marre";
-            String pw = "970321";
+            String us = "Erik";
+            String pw = "redred34";
             Connection con = DriverManager.getConnection(url, us, pw);
             String query = "Insert into Hospital.dbo.DOCTOR_REGISTER values(" + id + ", " + "'" + skill
                     + "'" + ", " + price + ", " + "'" + phone + "'" + "," + "'" + name + "');";
@@ -112,14 +112,23 @@ public class Controller {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost";
 
-            String us = "marre";
-            String pw = "970321";
+            String us = "Erik";
+            String pw = "redred34";
             Connection con = DriverManager.getConnection(url, us, pw);
-            String query = "UPDATE Hospital.dbo.DOCTOR_REGISTER SET doctor_id = " + id + ", doctor_skill = " + skill + ", " +
-                    "doctor_price = " + price + "doctor_phone = " + phone + "doctor_name = "+ name +
-                    "WHERE doctor_id = " + oldId + ";";
+            String query = "UPDATE Hospital.dbo.DOCTOR_REGISTER SET dr_id = " + id + ", dr_skill = " + skill + ", " +
+                    "dr_price = " + price + ", dr_phonenumber = " + phone + ", dr_name = "+ name +
+                    "WHERE dr_id = " + oldId + ";";
             Statement st = con.createStatement();
-            st.executeQuery(query);
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()){
+                rs.getString(1);
+                rs.getString(2);
+                rs.getString(3);
+                rs.getString(4);
+                rs.getString(5);
+                //adminView.getDoctormodel()
+            }
 
             con.close();
             st.close();
@@ -149,8 +158,8 @@ public class Controller {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost";
 
-            String us = "marre";
-            String pw = "970321";
+            String us = "Erik";
+            String pw = "redred34";
             Connection con = DriverManager.getConnection(url, us, pw);
 
             String query1 = "SELECT * FROM Hopsital.dbo.PATIENT_REGISTER";

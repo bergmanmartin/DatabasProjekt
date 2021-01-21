@@ -16,8 +16,8 @@ public class DBConnection {
     public Connection createConnecttion() throws Exception {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-        String user = "marre";
-        String pw = "970321";
+        String user = "Erik";
+        String pw = "redred34";
 
         String url = "jdbc:sqlserver://localhost";
 
