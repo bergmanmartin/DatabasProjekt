@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -14,6 +15,8 @@ public class AdminView extends JFrame implements ActionListener {
     private Container container = getContentPane();
 
     private Controller controller = null;
+
+    private DBConnection connection;
 
     private JButton btnAddPatient = new JButton("Add Patient");
     private JButton btnChangePatient = new JButton("Modify Patient");
@@ -39,11 +42,15 @@ public class AdminView extends JFrame implements ActionListener {
     private JLabel lblDoctors = new JLabel("List of Doctors");
     private JLabel lblPatients = new JLabel("List of Patients");
 
+    private JButton btndelDoctor = new JButton("Delete doctor");
+
+
 
 
 
     public AdminView(Controller c) {
         controller = c;
+        connection = new DBConnection();
 
        setTitle("Admin page");
        setBounds(10, 10, 1200, 800);
@@ -52,7 +59,43 @@ public class AdminView extends JFrame implements ActionListener {
 
        setLayoutManager();
 
+
     }
+
+    public void displayDoctors() {
+        doctorsCol.setRowCount(0);
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+
+            String query = "SELECT * FROM HOSPITAL.dbo.DOCTOR_REGISTER";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                String a = rs.getString(1);
+                String b = rs.getString(2);
+                String c = rs.getString(3);
+                String d = rs.getString(4);
+                String e = rs.getString(5);
+
+                doctorsCol.addRow(new Object[]{a, b, c, d, e});
+            }
+            con.close();
+            st.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void setLayoutManager(){
         container.setLayout(null);
@@ -70,6 +113,8 @@ public class AdminView extends JFrame implements ActionListener {
         btnModifyDoctor.setBounds(50, 300, 120, 40);
         btnloadDoctors.setBounds(50, 350, 120, 40);
         btnloadPatients.setBounds(50, 400, 120, 40);
+        btndelDoctor.setBounds(50, 450, 120, 40);
+
         doctorsTable.setModel(doctorsCol);
 
         spDoctors.setBounds(500, 100, 500, 600);
@@ -93,6 +138,7 @@ public class AdminView extends JFrame implements ActionListener {
         container.add(spPatients);
         container.add(lblDoctors);
         container.add(lblPatients);
+        container.add(btndelDoctor);
     }
 
     public void btnActions() {
@@ -112,6 +158,8 @@ public class AdminView extends JFrame implements ActionListener {
             spDoctors.setVisible(true);
             lblPatients.setVisible(false);
             lblDoctors.setVisible(true);
+            displayDoctors();
+
 
 
         }
@@ -125,6 +173,8 @@ public class AdminView extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == btnAddDoctor) {
+            controller.showAddDoctorView();
+            controller.getInfo();
 
         }
 

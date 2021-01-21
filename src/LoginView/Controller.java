@@ -19,6 +19,8 @@ public class Controller {
     AddDoctorFrame addDoctorFrame;
     Model.Doctor doctor;
 
+    int numOfDocs = 0;
+
 
 
 
@@ -48,6 +50,9 @@ public class Controller {
 
         loginFrame.setVisible(false);
         adminView.setVisible(true);
+
+
+
     }
 
 
@@ -62,14 +67,35 @@ public class Controller {
 
     public void showAddDoctorView(){
         addDoctorFrame = new AddDoctorFrame(this);
+
     }
 
     public void getInfo(){
-        addDoctorFrame.getTfID();
-        addDoctorFrame.getTfSkill();
-        addDoctorFrame.getTfPrice();
-        addDoctorFrame.getTfPhone();
-        addDoctorFrame.getTfName();
+        int id = addDoctorFrame.getTfID();
+        String skill = addDoctorFrame.getTfSkill();
+        int price = addDoctorFrame.getTfPrice();
+        String phone = addDoctorFrame.getTfPhone();
+        String name = addDoctorFrame.getTfName();
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+            String query = "Insert into Hospital.dbo.DOCTOR_REGISTER values(" + id + ", " + "'" + skill
+                    + "'" + ", " + price + ", " + "'" + phone + "'" + "," + "'" + name + "');";
+            Statement st = con.createStatement();
+            st.executeQuery(query);
+
+            con.close();
+            st.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public ArrayList<User> storeUser() {
@@ -121,6 +147,7 @@ public class Controller {
         return userList;
 
     }
+
 
     public void displayPatients(){
         JTable table = adminView.getPatientTable();

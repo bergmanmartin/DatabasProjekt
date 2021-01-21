@@ -7,6 +7,9 @@ import java.sql.*;
 public class DBConnection {
 
     AdminView view;
+    private static final String user = "marre";
+    private static final String pswrd = "970321";
+    private static final String url = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
 
 
@@ -27,6 +30,12 @@ public class DBConnection {
         return conn;
 
     }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, user, pswrd);
+    }
+
+
     public void testQuery() {
         try {
             Connection connection = createConnecttion();

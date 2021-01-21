@@ -133,6 +133,8 @@ public class AddDoctorFrame extends JFrame implements ActionListener {
         if(e.getSource() == addDoctor){
             C.getInfo();
             this.setVisible(false);
+
+
         }
         if(e.getSource() == cancel){
             this.setVisible(false);
