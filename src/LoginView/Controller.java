@@ -17,7 +17,9 @@ public class Controller {
     RegisterFrame registerFrame;
     DBConnection connection;
     AddDoctorFrame addDoctorFrame;
+    PatientView patientView;
     Model.Doctor doctor;
+    ChangeInformationFrame changeInformationFrame;
 
     int numOfDocs = 0;
 
@@ -29,11 +31,15 @@ public class Controller {
         adminView = new AdminView(this);
         doctorView = new DoctorView(this);
         registerFrame = new RegisterFrame(this);
+        changeInformationFrame = new ChangeInformationFrame(this);
+        patientView = new PatientView(this);
         connection = new DBConnection();
         loginFrame.setVisible(true);
         adminView.setVisible(false);
         doctorView.setVisible(false);
         registerFrame.setVisible(false);
+        changeInformationFrame.setVisible(false);
+        patientView.setVisible(false);
 
     }
 
@@ -47,11 +53,15 @@ public class Controller {
     }
 
     public void showAdminView() {
-
         loginFrame.setVisible(false);
         adminView.setVisible(true);
 
-
+    }
+    public void showPatientView() {
+        loginFrame.setVisible(false);
+        patientView.setVisible(true);
+    }
+    public void showChangeInfoView(){
 
     }
 

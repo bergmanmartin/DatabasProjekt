@@ -4,21 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
-public class RegisterFrame extends JFrame implements ActionListener {
+public class ChangeInformationFrame  extends JFrame implements ActionListener {
     Container container = getContentPane();
     Controller controller = null;
     JLabel userLbl = new JLabel("USERNAME");
 
-    JLabel lblMedNb = new JLabel("Medical number");
+
     JTextField tfUser = new JTextField();
     JTextField tfPswrd = new JTextField();
-    JButton btnRegister = new JButton("Register");
-    JTextField tfMednb = new JTextField();
+    JButton btnChange = new JButton("Change");
+
     JLabel lblSex = new JLabel("Sex (Enter onlyM or F)");
     JTextField tfSex = new JTextField();
     JLabel lblAdress = new JLabel("Adress");
@@ -33,17 +29,16 @@ public class RegisterFrame extends JFrame implements ActionListener {
     JLabel lblname = new JLabel("Last Name");
     JTextField tfFirstname = new JTextField();
     JTextField tfLastName = new JTextField();
-    DBConnection connection;
 
 
 
 
 
-    public RegisterFrame(Controller c) {
+    public ChangeInformationFrame(Controller c) {
         controller = c;
 
 
-        setTitle("Registration form");
+        setTitle("Change info");
         setBounds(10, 10, 370, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -60,10 +55,8 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
     public void setLayout() {
 
-        userLbl.setBounds(50,0,150,20);
-        tfUser.setBounds(50,25,150,20);
-        lblMedNb.setBounds(50, 50, 150, 20);
-        tfMednb.setBounds(50, 75, 150, 20);
+        userLbl.setBounds(50,50,150,20);
+        tfUser.setBounds(50,75,150,20);
         lblSex.setBounds(50, 100, 150, 20);
         tfSex.setBounds(50, 125, 150, 20);
         lblAdress.setBounds(50, 150, 150, 20);
@@ -81,14 +74,13 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
 
 
-        btnRegister.setBounds(50, 700, 100, 30);
+        btnChange.setBounds(50, 700, 100, 30);
 
     }
     public void addComponents() {
         container.add(userLbl);
         container.add(tfUser);
-        container.add(lblMedNb);
-        container.add(tfMednb);
+
         container.add(lblSex);
         container.add(tfSex);
         container.add(lblAdress);
@@ -104,22 +96,17 @@ public class RegisterFrame extends JFrame implements ActionListener {
         container.add(tfFirstname);
         container.add(tfLastName);
 
-        container.add(btnRegister);
+        container.add(btnChange);
     }
 
     public void addAction() {
-        btnRegister.addActionListener(this);
+        btnChange.addActionListener(this);
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnRegister) {
-            //controller.storeUser();
-
-            controller.showLoginAfterReg();
-            addPatientToDatabase();
-
+        if (e.getSource() == btnChange) {
 
         }
 
@@ -127,9 +114,6 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
     public String getUsername() {
         return  tfUser.getText();
-    }
-    public int getMedNumb() {
-        return Integer.parseInt(tfMednb.getText());
     }
     public String getSex() {
         return tfSex.getText();
@@ -153,49 +137,11 @@ public class RegisterFrame extends JFrame implements ActionListener {
         return tfLastName.getText();
     }
 
-    public void addPatientToDatabase(){
-
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost";
-
-            String us = "marre";
-            String pw = "970321";
-            Connection con = DriverManager.getConnection(url, us, pw);
-            String query = "INSERT INTO Hospital.dbo.PATIENT_REGISTER values(" + getMedNumb() + "," + "'"
-                    + getFname() + "'" + "," + "'" + getLname() + "','" + getSex() + "','" + getPhoneNumber() + "','"
-                    + getBirthday() + "','" + getRegDate() + "'," + 0 + ");";
-            Statement st = con.createStatement();
-            ResultSet resultSet = st.executeQuery(query);
-
-            con.close();
-            st.close();
-
-            System.out.println();
-
-            /*while (rs.next()) {
-                String a = rs.getString(1);
-                String b = rs.getString(2);
-                String c = rs.getString(3);
-                String d = rs.getString(4);
-                String e = rs.getString(5);
-                String f = rs.getString(6);
-                String g = rs.getString(7);
-                String h = rs.getString(8);
-                String i = rs.getString(9);
-
-
-            }*/
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(1) + " " + resultSet.getString(2) + " " + resultSet.getString(3) + " " + resultSet.getString(4) + " " + resultSet.getString(5)
-                        + " " + resultSet.getString(6) + " " + resultSet.getString(7) + " " + resultSet.getString(8) + " " + resultSet.getString(9));
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public static void main(String[] args) {
+        Controller controller = new Controller();
+        new ChangeInformationFrame(controller);
     }
 }
+
+
+

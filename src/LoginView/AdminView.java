@@ -31,7 +31,7 @@ public class AdminView extends JFrame implements ActionListener {
 
     private int numOfPats;
     private DefaultTableModel doctorsCol = new DefaultTableModel(new String[] {"Dr id", "Dr skill", "Dr Price", "Dr Phone", "Dr name"}, numOfdocs);
-    private DefaultTableModel patientsCol = new DefaultTableModel(new String[] {"Med_id", "f_name", "l_name", "sex", "phone", "birthday", "reg_date","totPricePad"}, numOfPats);
+    private DefaultTableModel patientsCol = new DefaultTableModel(new String[] {"Med_id", "f_name", "l_name", "sex", "phone", "birthday", "reg_date","totPricePad", "username"}, numOfPats);
 
     private JTable doctorsTable = new JTable();
     private JTable patientTable = new JTable();
@@ -195,6 +195,9 @@ public class AdminView extends JFrame implements ActionListener {
     public void createNewDoctor() {
 
     }
+
+
+
 
     public static void main(String[] args) {
         Controller controller = new Controller();
