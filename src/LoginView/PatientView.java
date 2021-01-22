@@ -21,10 +21,12 @@ public class PatientView extends JFrame implements ActionListener {
 
     private JButton btnshowPatientInfo = new JButton("Show your Information");
 
+    private JButton btnBook = new JButton("Book a meeting");
+
     private int numOfPatients;
     private int numOfdocs;
 
-    private DefaultTableModel patientInfo = new DefaultTableModel(new String [] {"Med_id", "f_name", "l_name", "sex", "phone", "reg_date", "totPricePaid"}, numOfPatients);
+
 
     private Controller controller = null;
 
@@ -33,13 +35,21 @@ public class PatientView extends JFrame implements ActionListener {
     private JButton btnloadDoctors = new JButton("Load Doctors");
 
 
+
+
     private DefaultTableModel doctorsCol = new DefaultTableModel(new String[]{"Dr id", "Dr skill", "Dr Price", "Dr Phone", "Dr name"}, numOfdocs);
-
     private JTable doctorsTable = new JTable();
-
     private JScrollPane spDoctors = new JScrollPane(doctorsTable);
 
+    private DefaultTableModel patientInfo = new DefaultTableModel(new String [] {"Med_id", "f_name", "l_name", "sex", "phone", "reg_date", "totPricePaid"}, numOfPatients);
+    private JTable patientTable = new JTable();
+    private JScrollPane spPatient = new JScrollPane(patientTable);
+
+    private JLabel lblPatient = new JLabel("Your Information");
     private JLabel lblDoctors = new JLabel("List of Doctors");
+    private JTextField tfSearch = new JTextField();
+    private JLabel lblSearch  = new JLabel("Search for Dr. Specialization");
+    private JButton btnSearch = new JButton("Search");
 
 
     public PatientView(Controller c) {
@@ -102,11 +112,22 @@ public class PatientView extends JFrame implements ActionListener {
 
     public void setLayout() {
 
-        btnloadDoctors.setBounds(50, 350, 120, 40);
+        btnloadDoctors.setBounds(50, 300, 120, 40);
+        lblSearch.setBounds(50, 150, 200, 40);
+        tfSearch.setBounds(50, 200, 150, 40);
+        btnSearch.setBounds(50, 250, 150, 40);
 
-        btnshowPatientInfo.setBounds(50, 250, 120, 40);
+
+        btnBook.setBounds(50, 350, 120, 40);
+
+        btnshowPatientInfo.setBounds(50, 400, 120, 40);
 
         doctorsTable.setModel(doctorsCol);
+
+        patientTable.setModel(patientInfo);
+        lblPatient.setBounds(500,  70, 100, 40);
+
+        spPatient.setBounds(500, 100, 500, 600);
 
         spDoctors.setBounds(500, 100, 500, 600);
 
@@ -121,6 +142,13 @@ public class PatientView extends JFrame implements ActionListener {
         container.add(spDoctors);
         container.add(lblDoctors);
         container.add(btnshowPatientInfo);
+        container.add(btnBook);
+        container.add(lblPatient);
+        container.add(spPatient);
+        container.add(btnSearch);
+        container.add(lblSearch);
+        container.add(tfSearch);
+
 
 
     }
@@ -128,20 +156,74 @@ public class PatientView extends JFrame implements ActionListener {
     public void btnActions() {
 
         btnloadDoctors.addActionListener(this);
+        btnshowPatientInfo.addActionListener(this);
+        btnSearch.addActionListener(this);
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnloadDoctors) {
-
+            lblPatient.setVisible(false);
             spDoctors.setVisible(true);
             lblDoctors.setVisible(true);
             displayDoctors();
 
+        }
+        if (e.getSource() == btnshowPatientInfo) {
+            lblDoctors.setVisible(false);
+            lblPatient.setVisible(true);
+            spDoctors.setVisible(false);
+            spPatient.setVisible(true);
 
         }
+        if (e.getSource() == btnSearch) {
+            lblDoctors.setVisible(true);
+            lblPatient.setVisible(false);
+            spDoctors.setVisible(true);
+            spPatient.setVisible(false);
+            showSearchinTable();
+        }
 
+
+    }
+
+    public String getSearch() {
+        return tfSearch.getText();
+    }
+
+    public void showSearchinTable() {
+        doctorsCol.setRowCount(0);
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+
+            String drskill = getSearch();
+
+            String query = "SELECT * FROM HOSPITAL.dbo.DOCTOR_REGISTER where dr_skill LIKE " + "'" + drskill + "'" + ";" ;
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                String a = rs.getString(1);
+                String b = rs.getString(2);
+                String c = rs.getString(3);
+                String d = rs.getString(4);
+                String e = rs.getString(5);
+
+                doctorsCol.addRow(new Object[]{a, b, c, d, e});
+            }
+            con.close();
+            st.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

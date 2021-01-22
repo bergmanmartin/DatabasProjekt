@@ -158,6 +158,44 @@ public class Controller {
 
     }
 
+    public void loginPatientFunction(int medID) {
+       ArrayList<Integer> usList = new ArrayList<Integer>();
+        try {
+
+
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+
+            String query = "SELECT medicinal_id FROM Hospital.dbo.PATIENT_REGISTER where medicinal_id = " + medID + ";";
+            String query1 = "IF EXISTS(SELECT 1 from Hospital.dbo.PATIENT_REGISTER where medicinal_id = " + medID + ";";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                usList.add(Integer.valueOf(rs.getString(1)));
+            }
+
+            if (usList.size() == 0) {
+                JOptionPane.showMessageDialog(null, "Medical ID doesnt exists");
+            }
+            else {
+                loginFrame.setVisible(false);
+                patientView.setVisible(true);
+            }
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void displayPatients(){
         JTable table = adminView.getPatientTable();

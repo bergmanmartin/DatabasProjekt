@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class RegisterFrame extends JFrame implements ActionListener {
     Container container = getContentPane();
@@ -165,37 +166,27 @@ public class RegisterFrame extends JFrame implements ActionListener {
             Connection con = DriverManager.getConnection(url, us, pw);
             String query = "INSERT INTO Hospital.dbo.PATIENT_REGISTER values(" + getMedNumb() + "," + "'"
                     + getFname() + "'" + "," + "'" + getLname() + "','" + getSex() + "','" + getPhoneNumber() + "','"
-                    + getBirthday() + "','" + getRegDate() + "'," + 0 + ");";
+                    + getBirthday() + "','" + getRegDate() + "'," + 0 +  ",'" + getUsername() + "','" + getAdress() +"');";
             Statement st = con.createStatement();
-            ResultSet resultSet = st.executeQuery(query);
+            int rows = st.executeUpdate(query);
+            System.out.println("Rows impacted" + rows);
 
+
+
+           /* while (resultSet.next()) {
+                System.out.println(resultSet.getString(1) + " " + resultSet.getString(2) + " " + resultSet.getString(3) + " " + resultSet.getString(4) + " " + resultSet.getString(5)
+                        + " " + resultSet.getString(6) + " " + resultSet.getString(7) + " " + resultSet.getString(8) + " " + resultSet.getString(9));
+            }*/
             con.close();
             st.close();
 
-            System.out.println();
-
-            /*while (rs.next()) {
-                String a = rs.getString(1);
-                String b = rs.getString(2);
-                String c = rs.getString(3);
-                String d = rs.getString(4);
-                String e = rs.getString(5);
-                String f = rs.getString(6);
-                String g = rs.getString(7);
-                String h = rs.getString(8);
-                String i = rs.getString(9);
-
-
-            }*/
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(1) + " " + resultSet.getString(2) + " " + resultSet.getString(3) + " " + resultSet.getString(4) + " " + resultSet.getString(5)
-                        + " " + resultSet.getString(6) + " " + resultSet.getString(7) + " " + resultSet.getString(8) + " " + resultSet.getString(9));
-            }
-
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "finns redan");
             e.printStackTrace();
         }
 
     }
+
+
 }

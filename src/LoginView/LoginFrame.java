@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class LoginFrame extends JFrame implements ActionListener {
     Container container = getContentPane();
@@ -12,7 +14,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     Controller controller = null;
 
 
-    JLabel userLbl = new JLabel("USERNAME");
+    JLabel userLbl = new JLabel("MedID");
     JLabel passwordLbl = new JLabel("PASSWORD");
     JTextField tfUser = new JTextField();
     JPasswordField tfPswrd = new JPasswordField();
@@ -22,9 +24,12 @@ public class LoginFrame extends JFrame implements ActionListener {
     JCheckBox showPassword = new JCheckBox("Show Password");
     JComboBox<String> menu = new JComboBox<>(new String[] {"Doctor", "Admin", "Patient"});
 
+    RegisterFrame frame;
+
 
     public LoginFrame (Controller c) {
         controller = c;
+        frame = new RegisterFrame(c);
         setLayoutManager();
         addActions();
 
@@ -51,15 +56,6 @@ public class LoginFrame extends JFrame implements ActionListener {
             tfPswrd.setText("");
         }
 
-       /* if (e.getSource() == showPassword) {
-            if (showPassword.isSelected()) {
-                tfPswrd.setEchoChar((char) 0);
-            }
-            else {
-                tfPswrd.setEchoChar('*');
-            }
-        } */
-
         if (e.getSource() == btnLogin) {
             if (menu.getSelectedItem() == "Admin")
             controller.showAdminView();
@@ -67,7 +63,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
         if (e.getSource() == btnLogin) {
             if (menu.getSelectedItem() == "Patient") {
-                controller.showPatientView();
+                controller.loginPatientFunction(getUserMed());
             }
         }
         if (e.getSource() == btnRegister) {
@@ -110,6 +106,12 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 
     }
+
+    public int getUserMed() {
+        return Integer.parseInt(tfUser.getText());
+    }
+
+
 
 
 
