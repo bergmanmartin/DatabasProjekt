@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class PatientView extends JFrame implements ActionListener {
 
@@ -27,29 +28,26 @@ public class PatientView extends JFrame implements ActionListener {
     private int numOfdocs;
 
 
-
     private Controller controller = null;
 
 
-
     private JButton btnloadDoctors = new JButton("Load Doctors");
-
-
 
 
     private DefaultTableModel doctorsCol = new DefaultTableModel(new String[]{"Dr id", "Dr skill", "Dr Price", "Dr Phone", "Dr name"}, numOfdocs);
     private JTable doctorsTable = new JTable();
     private JScrollPane spDoctors = new JScrollPane(doctorsTable);
 
-    private DefaultTableModel patientInfo = new DefaultTableModel(new String [] {"Med_id", "f_name", "l_name", "sex", "phone", "reg_date", "totPricePaid"}, numOfPatients);
+    private DefaultTableModel patientInfo = new DefaultTableModel(new String[]{"Med_id", "f_name", "l_name", "sex", "phone", "birthday", "reg_date", "totPricePaid", "adress"}, numOfPatients);
     private JTable patientTable = new JTable();
     private JScrollPane spPatient = new JScrollPane(patientTable);
 
     private JLabel lblPatient = new JLabel("Your Information");
     private JLabel lblDoctors = new JLabel("List of Doctors");
     private JTextField tfSearch = new JTextField();
-    private JLabel lblSearch  = new JLabel("Search for Dr. Specialization");
+    private JLabel lblSearch = new JLabel("Search for Dr. Specialization");
     private JButton btnSearch = new JButton("Search");
+    private int mednumb;
 
 
     public PatientView(Controller c) {
@@ -63,6 +61,10 @@ public class PatientView extends JFrame implements ActionListener {
         setResizable(false);
 
         setLayoutManager();
+
+        //System.out.println(mednumb);
+
+
 
 
     }
@@ -125,7 +127,7 @@ public class PatientView extends JFrame implements ActionListener {
         doctorsTable.setModel(doctorsCol);
 
         patientTable.setModel(patientInfo);
-        lblPatient.setBounds(500,  70, 100, 40);
+        lblPatient.setBounds(500, 70, 100, 40);
 
         spPatient.setBounds(500, 100, 500, 600);
 
@@ -148,7 +150,6 @@ public class PatientView extends JFrame implements ActionListener {
         container.add(btnSearch);
         container.add(lblSearch);
         container.add(tfSearch);
-
 
 
     }
@@ -175,6 +176,8 @@ public class PatientView extends JFrame implements ActionListener {
             lblPatient.setVisible(true);
             spDoctors.setVisible(false);
             spPatient.setVisible(true);
+            patientInfo.setRowCount(0);
+            controller.showPatientInfo();
 
         }
         if (e.getSource() == btnSearch) {
@@ -204,7 +207,7 @@ public class PatientView extends JFrame implements ActionListener {
 
             String drskill = getSearch();
 
-            String query = "SELECT * FROM HOSPITAL.dbo.DOCTOR_REGISTER where dr_skill LIKE " + "'" + drskill + "'" + ";" ;
+            String query = "SELECT * FROM HOSPITAL.dbo.DOCTOR_REGISTER where dr_skill LIKE " + "'" + drskill + "'" + ";";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(query);
 
@@ -226,4 +229,45 @@ public class PatientView extends JFrame implements ActionListener {
         }
 
     }
+
+
+
+
+
+    public void changeInformation(int medNumb) {
+        String fname;
+        String lname;
+        String phonenumber;
+        String adress;
+        String birthday;
+        int pricepaid;
+        String sex;
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+
+           // String query = "UPDATE Hospital.dbo.PATIENT_REGISTER set"
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DefaultTableModel getPatientInfo() {
+        return patientInfo;
+    }
+
+    public void addRow(Object[] rows){
+
+        patientInfo.addRow(rows);
+    }
+
+
+
+
 }

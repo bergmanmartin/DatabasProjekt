@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 public class LoginFrame extends JFrame implements ActionListener {
     Container container = getContentPane();
@@ -15,23 +13,29 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 
     JLabel userLbl = new JLabel("MedID");
-    JLabel passwordLbl = new JLabel("PASSWORD");
+
     JTextField tfUser = new JTextField();
-    JPasswordField tfPswrd = new JPasswordField();
+
     JButton btnLogin = new JButton("Login");
     JButton btnReset = new JButton("Reset");
     JButton btnRegister = new JButton("Register");
     JCheckBox showPassword = new JCheckBox("Show Password");
     JComboBox<String> menu = new JComboBox<>(new String[] {"Doctor", "Admin", "Patient"});
 
-    RegisterFrame frame;
+
+    private int mednumb;
+    private int login;
 
 
     public LoginFrame (Controller c) {
         controller = c;
-        frame = new RegisterFrame(c);
+
         setLayoutManager();
         addActions();
+        setTitle("Hospital System Login");
+        setBounds(10, 10, 370, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
 
 
     }
@@ -53,20 +57,25 @@ public class LoginFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnReset) {
             tfUser.setText("");
-            tfPswrd.setText("");
+
         }
 
-        if (e.getSource() == btnLogin) {
+         if (e.getSource() == btnLogin) {
             if (menu.getSelectedItem() == "Admin")
             controller.showAdminView();
         }
 
-        if (e.getSource() == btnLogin) {
+         if (e.getSource() == btnLogin) {
+
             if (menu.getSelectedItem() == "Patient") {
+                login = Integer.parseInt(tfUser.getText());
+               // System.out.println(login);
+
                 controller.loginPatientFunction(getUserMed());
+
             }
         }
-        if (e.getSource() == btnRegister) {
+         if (e.getSource() == btnRegister) {
             if (menu.getSelectedItem() == "Patient") {
                 controller.showRegistration();
             }
@@ -108,7 +117,10 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     public int getUserMed() {
-        return Integer.parseInt(tfUser.getText());
+        return (login);
+    }
+    public void setUserMed(int login) {
+        this.login = login;
     }
 
 
@@ -117,11 +129,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         Controller controller = new Controller();
-        LoginFrame frame = new LoginFrame(controller);
-        frame.setTitle("Hospital System Login");
-        frame.setVisible(true);
-        frame.setBounds(10, 10, 370, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+
+
     }
 }

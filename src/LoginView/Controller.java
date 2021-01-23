@@ -22,6 +22,8 @@ public class Controller {
     ChangeInformationFrame changeInformationFrame;
 
     int numOfDocs = 0;
+    private int medNumb;
+    private ArrayList<Integer> usList = new ArrayList<Integer>();
 
 
 
@@ -159,7 +161,7 @@ public class Controller {
     }
 
     public void loginPatientFunction(int medID) {
-       ArrayList<Integer> usList = new ArrayList<Integer>();
+
         try {
 
 
@@ -171,7 +173,7 @@ public class Controller {
             Connection con = DriverManager.getConnection(url, us, pw);
 
             String query = "SELECT medicinal_id FROM Hospital.dbo.PATIENT_REGISTER where medicinal_id = " + medID + ";";
-            String query1 = "IF EXISTS(SELECT 1 from Hospital.dbo.PATIENT_REGISTER where medicinal_id = " + medID + ";";
+
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(query);
 
@@ -187,9 +189,6 @@ public class Controller {
                 patientView.setVisible(true);
             }
 
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -197,30 +196,91 @@ public class Controller {
     }
 
 
-    public void displayPatients(){
-        JTable table = adminView.getPatientTable();
-        ArrayList<User> list = storeUser();
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        Object[] row = new Object[7];
-        for (int i = 0; i < list.size(); i++) {
-            row[0] = list.get(i).getUsername();
-            row[1] = list.get(i).getMednumber();
-            row[2] = list.get(i).getFname();
-            row[3] = list.get(i).getLname();
-            row[4] = list.get(i).getSex();
-            row[5] = list.get(i).getPhone();
-            row[6] = list.get(i).getBirthday();
-            row[7] = list.get(i).getRegdate();
-            row[8] = list.get(i).getAdress();
-            model.addRow(row);
 
+    public void showPatientInfo() {
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+            int m = loginFrame.getUserMed();
+            System.out.println(m);
+
+            String query = "SELECT * FROM Hospital.dbo.PATIENT_REGISTER where medicinal_id = "  + m + ";";
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                String a = rs.getString(1);
+                String b = rs.getString(2);
+                String c = rs.getString(3);
+                String d = rs.getString(4);
+                String e = rs.getString(5);
+                String f = rs.getString(6);
+                String g = rs.getString(7);
+                String h = rs.getString(8);
+                String i = rs.getString(9);
+
+                Object[] rows = new Object[]{a, b, c, d, e, f, g, h, i};
+                patientView.addRow(rows);
+
+            }
+            con.close();
+            st.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+    public void changePatientinfo() {
 
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+            int m = loginFrame.getUserMed();
+            System.out.println(m);
+
+            String query = "SELECT * FROM Hospital.dbo.PATIENT_REGISTER where medicinal_id = "  + m + ";";
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                String a = rs.getString(1);
+                String b = rs.getString(2);
+                String c = rs.getString(3);
+                String d = rs.getString(4);
+                String e = rs.getString(5);
+                String f = rs.getString(6);
+                String g = rs.getString(7);
+                String h = rs.getString(8);
+                String i = rs.getString(9);
+
+                Object[] rows = new Object[]{a, b, c, d, e, f, g, h, i};
+                patientView.addRow(rows);
+
+            }
+            con.close();
+            st.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-
-
-
+    public int getUserMed() {
+     return Integer.parseInt(loginFrame.tfUser.getText());
+    }
 
 
 
