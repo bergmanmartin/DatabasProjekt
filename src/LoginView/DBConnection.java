@@ -7,8 +7,8 @@ import java.sql.*;
 public class DBConnection {
 
     AdminView view;
-    private static final String user = "marre";
-    private static final String pswrd = "970321";
+    private static final String user = "Erik";
+    private static final String pswrd = "redred34";
     private static final String url = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
 

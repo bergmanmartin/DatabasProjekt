@@ -25,6 +25,7 @@ public class AdminView extends JFrame implements ActionListener {
     private JButton btnswitchToDview = new JButton("Switch to DoctorBView");
     private JButton btnloadPatients = new JButton("Load Patients");
     private JButton btnloadDoctors = new JButton("Load Doctors");
+    private JButton btnloadAppointments = new JButton("Load Appointments");
 
     private int numOfdocs;
 
@@ -101,8 +102,6 @@ public class AdminView extends JFrame implements ActionListener {
         setLayout();
         addComponents();
         btnActions();
-
-
     }
 
     public void setLayout() {
@@ -112,6 +111,7 @@ public class AdminView extends JFrame implements ActionListener {
         btnloadDoctors.setBounds(50, 300, 120, 40);
         btnloadPatients.setBounds(50, 350, 120, 40);
         btndelDoctor.setBounds(50, 400, 120, 40);
+        btnloadAppointments.setBounds(50,600,120,40);
 
         doctorsTable.setModel(doctorsCol);
 
@@ -136,6 +136,7 @@ public class AdminView extends JFrame implements ActionListener {
         container.add(lblDoctors);
         container.add(lblPatients);
         container.add(btndelDoctor);
+        container.add(btnloadAppointments);
     }
 
     public void btnActions() {
@@ -144,6 +145,14 @@ public class AdminView extends JFrame implements ActionListener {
         btnloadDoctors.addActionListener(this);
         btnModifyDoctor.addActionListener(this);
         btnChangePatient.addActionListener(this);
+        btndelDoctor.addActionListener(this);
+        btnloadAppointments.addActionListener(this);
+
+    }
+
+    public void displayAppointments(){
+
+
     }
 
 
@@ -174,6 +183,7 @@ public class AdminView extends JFrame implements ActionListener {
         if (e.getSource() == btnAddDoctor) {
             controller.showAddDoctorView();
             controller.getInfo();
+
         }
 
         if (e.getSource() == btnModifyDoctor){
@@ -184,9 +194,30 @@ public class AdminView extends JFrame implements ActionListener {
                 String phone = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 3).toString();
                 String name = doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 4).toString();
                 controller.modifyDoctor(id, skill, price, phone, name);
-                controller.getInfo(Integer.parseInt(doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString()));
+                controller.getInfoForUpdate(Integer.parseInt(doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString()));
+
                 System.out.println((Integer.parseInt(doctorsTable.getModel().getValueAt(doctorsTable.getSelectedRow(), 0).toString())));
             }
+            displayDoctors();
+
+        }
+
+        if (e.getSource() == btndelDoctor){
+            if (doctorsTable.getSelectedRow() == -1){
+                JOptionPane.showMessageDialog(null,"Select a doctor to delete from the list!");
+            }
+            int row = doctorsTable.getSelectedRow();
+            int column = 0;
+            String dr_id = (String) doctorsTable.getModel().getValueAt(row,column);
+            System.out.println(dr_id);
+            controller.deleteDoctor(dr_id);
+            displayDoctors();
+
+        }
+
+        if (e.getSource() == btnloadAppointments){
+            System.out.println("Jag har blivit klickad!");
+            controller.showDoctorView();
         }
 
 
