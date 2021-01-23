@@ -81,6 +81,12 @@ public class LoginFrame extends JFrame implements ActionListener {
             }
         }
 
+        if (e.getSource() == btnLogin){
+            if (menu.getSelectedItem() == "Doctor"){
+                controller.showDoctorView();
+            }
+        }
+
        /* if (e.getSource() == btnLogin) {
             if (menu.getSelectedItem() == "Doctor") {
                 controller.showDoctorView();

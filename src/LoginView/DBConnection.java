@@ -7,8 +7,8 @@ import java.sql.*;
 public class DBConnection {
 
     AdminView view;
-    private static final String user = "marre";
-    private static final String pswrd = "970321";
+    private static final String user = "Erik";
+    private static final String pswrd = "redred34";
     private static final String url = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
 
@@ -16,8 +16,8 @@ public class DBConnection {
     public Connection createConnecttion() throws Exception {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-        String user = "marre";
-        String pw = "970321";
+        String user = "Erik";
+        String pw = "redred34";
 
         String url = "jdbc:sqlserver://localhost";
 
