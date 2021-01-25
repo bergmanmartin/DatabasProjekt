@@ -19,6 +19,8 @@ public class PatientView extends JFrame implements ActionListener {
 
     private DBConnection connection;
 
+    private JButton changeInfo = new JButton("Change my Info");
+
 
     private JButton btnshowPatientInfo = new JButton("Show your Information");
 
@@ -61,6 +63,7 @@ public class PatientView extends JFrame implements ActionListener {
         setResizable(false);
 
         setLayoutManager();
+
 
         //System.out.println(mednumb);
 
@@ -122,16 +125,17 @@ public class PatientView extends JFrame implements ActionListener {
 
         btnBook.setBounds(50, 350, 120, 40);
 
-        btnshowPatientInfo.setBounds(50, 400, 120, 40);
+        btnshowPatientInfo.setBounds(50, 400, 150, 40);
+        changeInfo.setBounds(50, 450, 150, 40);
 
         doctorsTable.setModel(doctorsCol);
 
         patientTable.setModel(patientInfo);
         lblPatient.setBounds(500, 70, 100, 40);
 
-        spPatient.setBounds(500, 100, 500, 600);
+        spPatient.setBounds(250, 100, 800, 600);
 
-        spDoctors.setBounds(500, 100, 500, 600);
+        spDoctors.setBounds(250, 100, 800, 600);
 
         lblDoctors.setBounds(500, 70, 100, 40);
 
@@ -150,6 +154,7 @@ public class PatientView extends JFrame implements ActionListener {
         container.add(btnSearch);
         container.add(lblSearch);
         container.add(tfSearch);
+        container.add(changeInfo);
 
 
     }
@@ -159,6 +164,7 @@ public class PatientView extends JFrame implements ActionListener {
         btnloadDoctors.addActionListener(this);
         btnshowPatientInfo.addActionListener(this);
         btnSearch.addActionListener(this);
+        changeInfo.addActionListener(this);
     }
 
 
@@ -186,6 +192,11 @@ public class PatientView extends JFrame implements ActionListener {
             spDoctors.setVisible(true);
             spPatient.setVisible(false);
             showSearchinTable();
+        }
+        if (e.getSource() == changeInfo) {
+            controller.showChangeInfoView();
+
+
         }
 
 

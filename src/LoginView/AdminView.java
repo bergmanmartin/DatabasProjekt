@@ -95,6 +95,45 @@ public class AdminView extends JFrame implements ActionListener {
         }
     }
 
+    public void showAllPatientsinfo() {
+
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+
+            String query = "SELECT * FROM Hospital.dbo.PATIENT_REGISTER;";
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                String a = rs.getString(1);
+                String b = rs.getString(2);
+                String c = rs.getString(3);
+                String d = rs.getString(4);
+                String e = rs.getString(5);
+                String f = rs.getString(6);
+                String g = rs.getString(7);
+                String h = rs.getString(8);
+                String i = rs.getString(9);
+
+                patientsCol.addRow(new Object[] {a, b, c, d, e, f, g, h, i});
+
+            }
+            con.close();
+            st.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public void setLayoutManager(){
@@ -168,7 +207,8 @@ public class AdminView extends JFrame implements ActionListener {
             spPatients.setVisible(true);
             lblDoctors.setVisible(false);
             lblPatients.setVisible(true);
-
+            patientsCol.setRowCount(0);
+            showAllPatientsinfo();
 
         }
 

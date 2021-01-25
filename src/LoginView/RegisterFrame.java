@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class RegisterFrame extends JFrame implements ActionListener {
     Container container = getContentPane();
     Controller controller = null;
-    JLabel userLbl = new JLabel("USERNAME");
+
 
     JLabel lblMedNb = new JLabel("Medical number");
-    JTextField tfUser = new JTextField();
+
     JTextField tfPswrd = new JTextField();
     JButton btnRegister = new JButton("Register");
     JTextField tfMednb = new JTextField();
@@ -61,8 +61,8 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
     public void setLayout() {
 
-        userLbl.setBounds(50,0,150,20);
-        tfUser.setBounds(50,25,150,20);
+
+
         lblMedNb.setBounds(50, 50, 150, 20);
         tfMednb.setBounds(50, 75, 150, 20);
         lblSex.setBounds(50, 100, 150, 20);
@@ -86,8 +86,8 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
     }
     public void addComponents() {
-        container.add(userLbl);
-        container.add(tfUser);
+
+
         container.add(lblMedNb);
         container.add(tfMednb);
         container.add(lblSex);
@@ -126,9 +126,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
     }
 
-    public String getUsername() {
-        return  tfUser.getText();
-    }
+
     public int getMedNumb() {
         return Integer.parseInt(tfMednb.getText());
     }
@@ -164,13 +162,46 @@ public class RegisterFrame extends JFrame implements ActionListener {
             String us = "marre";
             String pw = "970321";
             Connection con = DriverManager.getConnection(url, us, pw);
+
+
             String query = "INSERT INTO Hospital.dbo.PATIENT_REGISTER values(" + getMedNumb() + "," + "'"
                     + getFname() + "'" + "," + "'" + getLname() + "','" + getSex() + "','" + getPhoneNumber() + "','"
-                    + getBirthday() + "','" + getRegDate() + "'," + 0 +  ",'" + getUsername() + "','" + getAdress() +"');";
+                    + getBirthday() + "','" + getRegDate() + "'," + 0 + ",'" + getAdress() + "');";
             Statement st = con.createStatement();
             int rows = st.executeUpdate(query);
             System.out.println("Rows impacted" + rows);
 
+
+
+
+
+            con.close();
+            st.close();
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Couldn't add");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void alreadyExistingUser(){
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost";
+
+            String us = "marre";
+            String pw = "970321";
+            Connection con = DriverManager.getConnection(url, us, pw);
+
+
+            String query = "INSERT INTO Hospital.dbo.PATIENT_REGISTER values(" + getMedNumb() + "," + "'"
+                    + getFname() + "'" + "," + "'" + getLname() + "','" + getSex() + "','" + getPhoneNumber() + "','"
+                    + getBirthday() + "','" + getRegDate() + "'," + 0 + ",'" + getAdress() + "');";
+            Statement st = con.createStatement();
+            int rows = st.executeUpdate(query);
+            System.out.println("Rows impacted" + rows);
 
 
 

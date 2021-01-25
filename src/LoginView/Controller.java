@@ -4,10 +4,7 @@ import Model.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Controller {
@@ -19,7 +16,7 @@ public class Controller {
     AddDoctorFrame addDoctorFrame;
     PatientView patientView;
     Model.Doctor doctor;
-    ChangeInformationFrame changeInformationFrame;
+    ChangePatientinfoframe changepatientinfoframe;
 
     int numOfDocs = 0;
     private int medNumb;
@@ -33,14 +30,14 @@ public class Controller {
         adminView = new AdminView(this);
         doctorView = new DoctorView(this);
         registerFrame = new RegisterFrame(this);
-        changeInformationFrame = new ChangeInformationFrame(this);
+        changepatientinfoframe = new ChangePatientinfoframe(this);
         patientView = new PatientView(this);
         connection = new DBConnection();
         loginFrame.setVisible(true);
         adminView.setVisible(false);
         doctorView.setVisible(false);
         registerFrame.setVisible(false);
-        changeInformationFrame.setVisible(false);
+        changepatientinfoframe.setVisible(false);
         patientView.setVisible(false);
 
     }
@@ -64,7 +61,12 @@ public class Controller {
         patientView.setVisible(true);
     }
     public void showChangeInfoView(){
-
+        patientView.setVisible(false);
+        changepatientinfoframe.setVisible(true);
+    }
+    public void showPatientViewFromInfoChange() {
+        changepatientinfoframe.setVisible(false);
+        patientView.setVisible(true);
     }
 
 
@@ -110,57 +112,10 @@ public class Controller {
 
     }
 
-    public ArrayList<User> storeUser() {
 
-        ArrayList<User> userList = new ArrayList<User>();
-        String usName = registerFrame.getUsername();
-        int mednumb = registerFrame.getMedNumb();
-        String sex = registerFrame.getSex();
-        String adress = registerFrame.getAdress();
-        String birthday = registerFrame.getBirthday();
-        String regdate = registerFrame.getRegDate();
-        String phonenumber = registerFrame.getPhoneNumber();
-        String fname = registerFrame.getFname();
-        String lname = registerFrame.getLname();
-
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost";
-
-            String us = "marre";
-            String pw = "970321";
-            Connection con = DriverManager.getConnection(url, us, pw);
-
-            String query1 = "SELECT * FROM Hopsital.dbo.PATIENT_REGISTER";
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query1);
-            User user;
-
-            while(rs.next()) {
-                user = new User(rs.getString("username"),
-                                rs.getInt("medicinal_id"),
-                                rs.getString("f_name"),
-                                rs.getString("l_name"),
-                                rs.getString("sex"),
-                                rs.getString("phoneNumber"),
-                                rs.getString("birthday"),
-                                rs.getString("reg_date"),
-                                rs.getString("adress"));
-
-                userList.add(user);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();;
-        }
-
-        return userList;
-
-    }
 
     public void loginPatientFunction(int medID) {
+
 
         try {
 
@@ -184,6 +139,7 @@ public class Controller {
             if (usList.size() == 0) {
                 JOptionPane.showMessageDialog(null, "Medical ID doesnt exists");
             }
+
             else {
                 loginFrame.setVisible(false);
                 patientView.setVisible(true);
@@ -200,6 +156,7 @@ public class Controller {
     public void showPatientInfo() {
 
 
+
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost";
@@ -237,7 +194,18 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
+
+
+
     public void changePatientinfo() {
+        String fname = changepatientinfoframe.getCFname();
+        String lname = changepatientinfoframe.getCLname();
+        String phonenumber = changepatientinfoframe.getCPhoneNumber();
+        String adress = changepatientinfoframe.getCAdress();
+        String birthday = changepatientinfoframe. getCBirthday();
+        String sex = changepatientinfoframe.getCSex();
+
 
 
         try {
@@ -250,28 +218,25 @@ public class Controller {
             int m = loginFrame.getUserMed();
             System.out.println(m);
 
-            String query = "SELECT * FROM Hospital.dbo.PATIENT_REGISTER where medicinal_id = "  + m + ";";
+            String query = "update Hospital.dbo.PATIENT_REGISTER set f_name=?, l_name=?, sex=?, phoneNumber=?, birthday=?, adress=? where medicinal_id =" + m +";";
 
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);
 
-            while (rs.next()) {
-                String a = rs.getString(1);
-                String b = rs.getString(2);
-                String c = rs.getString(3);
-                String d = rs.getString(4);
-                String e = rs.getString(5);
-                String f = rs.getString(6);
-                String g = rs.getString(7);
-                String h = rs.getString(8);
-                String i = rs.getString(9);
+                PreparedStatement ps = con.prepareStatement(query);
 
-                Object[] rows = new Object[]{a, b, c, d, e, f, g, h, i};
-                patientView.addRow(rows);
+                ps.setString(1, fname);
+                ps.setString(2, lname);
+                ps.setString(3, sex);
+                ps.setString(4, phonenumber);
+                ps.setString(5, birthday);
+                ps.setString(6, adress);
 
-            }
+
+                int rowsAffected = ps.executeUpdate();
+                System.out.println(rowsAffected);
+
+
             con.close();
-            st.close();
+            ps.close();
 
         } catch (Exception e) {
             e.printStackTrace();
